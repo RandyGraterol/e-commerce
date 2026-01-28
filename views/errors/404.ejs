@@ -1,0 +1,15 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+    <div class="text-6xl font-bold text-blue-600 mb-4">404</div>
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">Página No Encontrada</h1>
+    <p class="text-gray-600 mb-6">
+      Lo sentimos, la página que buscas no existe o ha sido movida.
+    </p>
+    <% if (typeof message !== 'undefined' && message) { %>
+      <p class="text-sm text-gray-500 mb-6"><%= message %></p>
+    <% } %>
+    <a href="/" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+      Volver al Inicio
+    </a>
+  </div>
+</div>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo - Sistema de Notificaciones</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Notifications System -->
+  <script src="/js/notifications.js"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-3">
+          <i class="fas fa-bell text-blue-600"></i>
+          Sistema de Notificaciones
+        </h1>
+        <p class="text-gray-600 text-lg">
+          Demostración de Toast Notifications y Modal Dialogs
+        </p>
+      </div>
+
+      <!-- Toast Notifications Section -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fas fa-comment-dots text-blue-600 mr-3"></i>
+          Toast Notifications (Auto-dismiss)
+        </h2>
+        <p class="text-gray-600 mb-6">
+          Notificaciones que aparecen desde el lado derecho y desaparecen automáticamente después de unos segundos.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button 
+            onclick="showSuccess('¡Operación exitosa! Todo funcionó correctamente.')"
+            class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-check-circle text-xl"></i>
+            Toast Success
+          </button>
+          
+          <button 
+            onclick="showError('¡Error! Algo salió mal. Por favor intenta de nuevo.')"
+            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-times-circle text-xl"></i>
+            Toast Error
+          </button>
+          
+          <button 
+            onclick="showWarning('¡Advertencia! Verifica los datos antes de continuar.')"
+            class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+            Toast Warning
+          </button>
+          
+          <button 
+            onclick="showInfo('Información: Esta es una notificación informativa.')"
+            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-info-circle text-xl"></i>
+            Toast Info
+          </button>
+        </div>
+        
+        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+          <p class="text-sm text-gray-700">
+            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+            <strong>Tip:</strong> Las notificaciones toast se pueden cerrar manualmente haciendo clic en la X, o desaparecen automáticamente después de 4 segundos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Dialogs Section -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fas fa-window-restore text-purple-600 mr-3"></i>
+          Modal Dialogs (Require interaction)
+        </h2>
+        <p class="text-gray-600 mb-6">
+          Ventanas modales que requieren interacción del usuario antes de continuar.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button 
+            onclick="testConfirm()"
+            class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-question-circle text-xl"></i>
+            Modal Confirm
+          </button>
+          
+          <button 
+            onclick="testAlert()"
+            class="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-bell text-xl"></i>
+            Modal Alert
+          </button>
+          
+          <button 
+            onclick="testPrompt()"
+            class="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-keyboard text-xl"></i>
+            Modal Prompt
+          </button>
+          
+          <button 
+            onclick="testDangerConfirm()"
+            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-exclamation-circle text-xl"></i>
+            Danger Confirm
+          </button>
+        </div>
+        
+        <div class="mt-6 p-4 bg-purple-50 rounded-lg">
+          <p class="text-sm text-gray-700">
+            <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+            <strong>Tip:</strong> Los modales se pueden cerrar con ESC, haciendo clic fuera del modal, o usando los botones de acción.
+          </p>
+        </div>
+      </div>
+
+      <!-- Loading Overlay Section -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+          <i class="fas fa-spinner text-blue-600 mr-3"></i>
+          Loading Overlay
+        </h2>
+        <p class="text-gray-600 mb-6">
+          Overlay de carga para operaciones asíncronas.
+        </p>
+        
+        <button 
+          onclick="testLoading()"
+          class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 mx-auto"
+        >
+          <i class="fas fa-sync-alt text-xl"></i>
+          Mostrar Loading (3 segundos)
+        </button>
+      </div>
+
+      <!-- Combined Example -->
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
+        <h2 class="text-2xl font-bold mb-4 flex items-center">
+          <i class="fas fa-rocket mr-3"></i>
+          Ejemplo Completo
+        </h2>
+        <p class="mb-6 opacity-90">
+          Simula un flujo completo: confirmación → loading → resultado
+        </p>
+        
+        <button 
+          onclick="testCompleteFlow()"
+          class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 mx-auto hover:bg-gray-100"
+        >
+          <i class="fas fa-play-circle text-xl"></i>
+          Ejecutar Flujo Completo
+        </button>
+      </div>
+
+      <!-- Back to Home -->
+      <div class="text-center mt-8">
+        <a 
+          href="/" 
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+        >
+          <i class="fas fa-arrow-left"></i>
+          Volver al inicio
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Test functions for modals
+    async function testConfirm() {
+      const result = await showConfirm(
+        '¿Confirmar acción?',
+        'Esta es una ventana de confirmación. ¿Deseas continuar con esta acción?',
+        {
+          confirmText: 'Sí, continuar',
+          cancelText: 'No, cancelar',
+          type: 'warning'
+        }
+      );
+      
+      if (result) {
+        showSuccess('¡Confirmado! La acción fue aceptada.');
+      } else {
+        showInfo('Acción cancelada por el usuario.');
+      }
+    }
+
+    async function testAlert() {
+      await showAlert(
+        'Información importante',
+        'Este es un modal de alerta. Solo requiere que el usuario haga clic en "Entendido" para continuar.',
+        'info'
+      );
+      showInfo('Modal de alerta cerrado');
+    }
+
+    async function testPrompt() {
+      const name = await showPrompt(
+        'Ingresa tu nombre',
+        'Por favor, escribe tu nombre completo:',
+        {
+          placeholder: 'Ej: Juan Pérez',
+          defaultValue: '',
+          confirmText: 'Guardar',
+          cancelText: 'Cancelar'
+        }
+      );
+      
+      if (name) {
+        showSuccess(`¡Hola ${name}! Tu nombre fue guardado correctamente.`);
+      } else {
+        showInfo('No se ingresó ningún nombre.');
+      }
+    }
+
+    async function testDangerConfirm() {
+      const result = await showConfirm(
+        '¡Acción peligrosa!',
+        'Esta acción es irreversible y puede causar pérdida de datos. ¿Estás completamente seguro?',
+        {
+          confirmText: 'Sí, eliminar',
+          cancelText: 'No, mantener',
+          type: 'danger'
+        }
+      );
+      
+      if (result) {
+        showError('Acción peligrosa confirmada (simulación)');
+      } else {
+        showSuccess('Acción cancelada. Los datos están seguros.');
+      }
+    }
+
+    function testLoading() {
+      showLoading('Procesando operación...');
+      
+      setTimeout(() => {
+        hideLoading();
+        showSuccess('¡Operación completada exitosamente!');
+      }, 3000);
+    }
+
+    async function testCompleteFlow() {
+      // Step 1: Confirm
+      const shouldProceed = await showConfirm(
+        'Iniciar proceso',
+        '¿Deseas iniciar el proceso de ejemplo? Esto tomará unos segundos.',
+        {
+          confirmText: 'Iniciar',
+          cancelText: 'Cancelar',
+          type: 'info'
+        }
+      );
+      
+      if (!shouldProceed) {
+        showInfo('Proceso cancelado');
+        return;
+      }
+      
+      // Step 2: Loading
+      showLoading('Procesando datos...');
+      
+      // Simulate async operation
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      hideLoading();
+      
+      // Step 3: Result
+      const success = Math.random() > 0.3; // 70% success rate
+      
+      if (success) {
+        await showAlert(
+          '¡Proceso completado!',
+          'El proceso se ejecutó correctamente. Todos los datos fueron procesados sin errores.',
+          'success'
+        );
+        showSuccess('Flujo completo finalizado exitosamente');
+      } else {
+        await showAlert(
+          'Error en el proceso',
+          'Ocurrió un error durante el procesamiento. Por favor intenta nuevamente.',
+          'error'
+        );
+        showError('El proceso falló (simulación)');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
+  
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Checkout Form -->
+    <div class="lg:col-span-2">
+      <form id="checkoutForm" class="space-y-6">
+        <!-- Shipping Information -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Información de Envío</h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+              <input 
+                type="text" 
+                name="shippingAddress" 
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Calle y número"
+              >
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Ciudad</label>
+                <input 
+                  type="text" 
+                  name="city" 
+                  required
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Ciudad"
+                >
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Código Postal</label>
+                <input 
+                  type="text" 
+                  name="postalCode" 
+                  required
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="12345"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Payment Information -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Información de Pago</h2>
+          
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <p class="text-sm text-blue-800">
+              💳 <strong>Tarjeta de prueba:</strong> 4242424242424242
+            </p>
+            <p class="text-xs text-blue-600 mt-1">
+              Usa esta tarjeta para simular un pago exitoso. Cualquier otra tarjeta será rechazada.
+            </p>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Número de Tarjeta</label>
+              <input 
+                type="text" 
+                name="cardNumber" 
+                required
+                maxlength="16"
+                pattern="[0-9]{16}"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="4242424242424242"
+              >
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre en la Tarjeta</label>
+              <input 
+                type="text" 
+                name="cardName" 
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="JUAN PEREZ"
+              >
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Expiración</label>
+                <input 
+                  type="text" 
+                  name="cardExpiry" 
+                  required
+                  pattern="[0-9]{2}/[0-9]{2}"
+                  maxlength="5"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="MM/YY"
+                >
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                <input 
+                  type="text" 
+                  name="cardCVV" 
+                  required
+                  pattern="[0-9]{3,4}"
+                  maxlength="4"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="123"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button 
+          type="submit" 
+          id="submitBtn"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
+        >
+          Completar Pedido
+        </button>
+      </form>
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Resumen del Pedido</h2>
+        
+        <div class="space-y-3 mb-6">
+          <% cart.forEach(item => { %>
+            <div class="flex items-center space-x-3 pb-3 border-b">
+              <% if (item.imageUrl) { %>
+                <img 
+                  src="<%= item.imageUrl %>" 
+                  alt="<%= item.name %>" 
+                  class="w-16 h-16 object-cover rounded"
+                >
+              <% } else { %>
+                <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
+                  <span class="text-gray-400 text-xs">Sin imagen</span>
+                </div>
+              <% } %>
+              <div class="flex-1">
+                <p class="font-semibold text-sm text-gray-800"><%= item.name %></p>
+                <p class="text-xs text-gray-500">Cantidad: <%= item.quantity %></p>
+                <p class="text-sm font-bold text-blue-600">$<%= item.subtotal.toFixed(2) %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        
+        <div class="space-y-3 mb-6">
+          <div class="flex justify-between text-gray-600">
+            <span>Subtotal</span>
+            <span class="font-semibold">$<%= subtotal %></span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Envío</span>
+            <span class="font-semibold">Gratis</span>
+          </div>
+          <div class="border-t pt-3 flex justify-between text-lg font-bold text-gray-800">
+            <span>Total</span>
+            <span class="text-blue-600">$<%= total %></span>
+          </div>
+        </div>
+        
+        <div class="text-center text-sm text-gray-500">
+          <p>🔒 Pago seguro y encriptado</p>
+          <p class="mt-1">🚚 Envío gratis</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const submitBtn = document.getElementById('submitBtn');
+  const originalText = submitBtn.textContent;
+  
+  // Disable button and show loading
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Procesando pago...';
+  submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+  
+  showLoading('Procesando pago...');
+  
+  try {
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    const response = await fetch('/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    
+    const result = await response.json();
+    
+    hideLoading();
+    
+    if (result.success) {
+      await showAlert(
+        '¡Pago exitoso!',
+        `${result.message}\n\nID de Transacción: ${result.transactionId}`,
+        'success'
+      );
+      window.location.href = '/client/orders/' + result.orderId;
+    } else {
+      showError(result.error);
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+      submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  } catch (error) {
+    hideLoading();
+    console.error('Error:', error);
+    showError('Error al procesar el pago');
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+  }
+});
+
+// Format card expiry input
+document.querySelector('input[name="cardExpiry"]').addEventListener('input', (e) => {
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length >= 2) {
+    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+  }
+  e.target.value = value;
+});
+
+// Format card number input
+document.querySelector('input[name="cardNumber"]').addEventListener('input', (e) => {
+  e.target.value = e.target.value.replace(/\D/g, '');
+});
+
+// Format CVV input
+document.querySelector('input[name="cardCVV"]').addEventListener('input', (e) => {
+  e.target.value = e.target.value.replace(/\D/g, '');
+});
+</script>

@@ -1,0 +1,274 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="mb-6">
+    <a href="/admin/products" class="text-blue-600 hover:underline">&larr; Volver a productos</a>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">
+      <%= product ? 'Editar Producto' : 'Crear Producto' %>
+    </h1>
+
+    <% if (error) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form 
+      method="POST" 
+      action="<%= product ? '/admin/products/' + product.id : '/admin/products' %>" 
+      enctype="multipart/form-data"
+      class="space-y-6"
+    >
+      <!-- Name -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+          Nombre <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          value="<%= product ? product.name : '' %>" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+          Descripción
+        </label>
+        <textarea 
+          id="description" 
+          name="description" 
+          rows="4"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        ><%= product ? product.description || '' : '' %></textarea>
+      </div>
+
+      <!-- Price and Stock -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+            Precio <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500">$</span>
+            <input 
+              type="number" 
+              id="price" 
+              name="price" 
+              value="<%= product ? product.price : '' %>" 
+              step="0.01" 
+              min="0" 
+              required
+              class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="stock" class="block text-sm font-medium text-gray-700 mb-2">
+            Stock
+          </label>
+          <input 
+            type="number" 
+            id="stock" 
+            name="stock" 
+            value="<%= product ? product.stock : 0 %>" 
+            min="0" 
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label for="categoryId" class="block text-sm font-medium text-gray-700 mb-2">
+          Categoría <span class="text-red-500">*</span>
+        </label>
+        <select 
+          id="categoryId" 
+          name="categoryId" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Seleccionar categoría</option>
+          <% categories.forEach(cat => { %>
+            <option 
+              value="<%= cat.id %>" 
+              <%= product && product.categoryId == cat.id ? 'selected' : '' %>
+            >
+              <%= cat.name %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <!-- Featured -->
+      <div class="flex items-center">
+        <input 
+          type="checkbox" 
+          id="featured" 
+          name="featured" 
+          <%= product && product.featured ? 'checked' : '' %>
+          class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        >
+        <label for="featured" class="ml-2 text-sm font-medium text-gray-700">
+          Producto destacado
+        </label>
+      </div>
+
+      <!-- Existing Images (Edit mode) -->
+      <% if (product && product.images && product.images.length > 0) { %>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Imágenes actuales
+          </label>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <% product.images.forEach((image, index) => { %>
+              <div class="relative group">
+                <img 
+                  src="<%= image.imageUrl %>" 
+                  alt="Imagen <%= index + 1 %>" 
+                  class="w-full h-32 object-cover rounded-lg border-2 <%= image.isMain ? 'border-blue-500' : 'border-gray-300' %>"
+                >
+                <% if (image.isMain) { %>
+                  <span class="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                    Principal
+                  </span>
+                <% } %>
+                <div class="absolute top-2 right-2">
+                  <label class="flex items-center bg-white rounded shadow-sm px-2 py-1 cursor-pointer hover:bg-gray-50">
+                    <input 
+                      type="checkbox" 
+                      name="deleteImages" 
+                      value="<%= image.id %>"
+                      class="w-4 h-4 text-red-600"
+                    >
+                    <span class="ml-1 text-xs text-red-600">Eliminar</span>
+                  </label>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Upload Images -->
+      <div>
+        <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
+          <%= product ? 'Agregar nuevas imágenes' : 'Imágenes del producto' %> (máx. 5)
+        </label>
+        <input 
+          type="file" 
+          id="images" 
+          name="images" 
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" 
+          multiple
+          onchange="previewImages(event)"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+        <p class="text-sm text-gray-500 mt-1">
+          Formatos: JPEG, PNG, GIF, WebP. Tamaño máximo: 5MB por imagen.
+        </p>
+      </div>
+
+      <!-- Image Preview -->
+      <div id="imagePreview" class="hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Vista previa
+        </label>
+        <div id="previewContainer" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        
+        <div class="mt-4">
+          <label for="mainImage" class="block text-sm font-medium text-gray-700 mb-2">
+            Imagen principal
+          </label>
+          <select 
+            id="mainImage" 
+            name="mainImage"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+          </select>
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex justify-end space-x-4 pt-6 border-t">
+        <a 
+          href="/admin/products" 
+          class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+        >
+          Cancelar
+        </a>
+        <button 
+          type="submit" 
+          class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+        >
+          <%= product ? 'Actualizar' : 'Crear' %> Producto
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function previewImages(event) {
+  const files = event.target.files;
+  const previewDiv = document.getElementById('imagePreview');
+  const previewContainer = document.getElementById('previewContainer');
+  const mainImageSelect = document.getElementById('mainImage');
+  
+  if (files.length === 0) {
+    previewDiv.classList.add('hidden');
+    return;
+  }
+  
+  if (files.length > 5) {
+    alert('Solo puedes subir un máximo de 5 imágenes');
+    event.target.value = '';
+    return;
+  }
+  
+  previewDiv.classList.remove('hidden');
+  previewContainer.innerHTML = '';
+  mainImageSelect.innerHTML = '';
+  
+  Array.from(files).forEach((file, index) => {
+    // Validate file size
+    if (file.size > 5 * 1024 * 1024) {
+      alert(`La imagen "${file.name}" excede el tamaño máximo de 5MB`);
+      return;
+    }
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const div = document.createElement('div');
+      div.className = 'relative';
+      div.innerHTML = `
+        <img 
+          src="${e.target.result}" 
+          alt="Preview ${index + 1}" 
+          class="w-full h-32 object-cover rounded-lg border-2 border-gray-300"
+        >
+        <span class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+          ${index + 1}
+        </span>
+      `;
+      previewContainer.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+    
+    // Add option to main image select
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `Imagen ${index + 1} - ${file.name}`;
+    if (index === 0) option.selected = true;
+    mainImageSelect.appendChild(option);
+  });
+}
+</script>
